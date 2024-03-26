@@ -1,0 +1,60 @@
+
+  <style>
+    
+    .container {
+      max-width: 400px;
+      margin: 100px auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+    label, input, button {
+      margin-bottom: 10px;
+    }
+    button {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    p {
+      text-align: center;
+    }
+    a {
+      color: #007bff;
+      text-decoration: none;
+    }
+  </style>
+
+  <div class="container">
+    <h1>Login</h1>
+    <% if (message) { %>
+      <p><%= message %></p>
+    <% } %>
+    <form action="/login" method="POST">
+        <label for="role">Role:</label>
+      <input type="role" id="role" name="role" required>
+
+      <label for="Email">Email:</label>
+      <input type="Email" id="Email" name="Email" required>
+      <label for="password">Mot de passe:</label>
+      <input type="password" id="password" name="password" required>
+      <button type="submit"> Connecter</button>
+    </form>
+    <p>Vous n'avez pas de compte ? <a href="/register">Registre</a></p>
+  </div>
+

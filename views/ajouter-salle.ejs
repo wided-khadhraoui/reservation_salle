@@ -1,0 +1,82 @@
+<%- include ('layout/header') %>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajouter une Salle</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        label, input, button {
+            display: block;
+            margin-bottom: 15px;
+        }
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Ajouter une Salle</h1>
+        <!-- Formulaire d'ajout de salle -->
+        <form action="/ajouter-salle" method="POST">
+            
+            <label for="Id">Id :</label>
+            <input type="text" id="Id" name="Id" required>
+
+            <label for="Nom">Nom :</label>
+            <input type="text" id="Nom" name="Nom" required>
+
+            <label for="Capacite">Capacite :</label>
+            <input type="text" id="Capacite" name="Capacite" required>
+
+            <label for="Equipments">Equipements :</label>
+            <input type="text" id="Equipments" name="Equipments">
+
+            <label for="Disponibilites">Disponibilités :</label>
+            <input type="date" id="selectedDate" name="selectedDate" required> 
+            
+
+            <label for="Tarif">Tarif :</label>
+            <input type="text" id="Tarif" name="Tarif" required>
+
+            <button type="submit">Ajouter la Salle</button>
+        </form>
+    </div>
+</body>
+</html>
+
+<%- include ('layout/footer') %>
+

@@ -1,0 +1,101 @@
+<%- include('layout/header') %>
+
+<style>
+    /* Style du tableau */
+    .table-salles {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    .table-salles th, .table-salles td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    .table-salles th {
+        background-color: #f2f2f2;
+        color: #333;
+    }
+
+    .table-salles tr:hover {
+        background-color: #f9f9f9;
+    }
+
+    /* Style des icônes d'action */
+    .action-icons a {
+        margin-right: 5px;
+        color: #333;
+        text-decoration: none;
+        font-size: 16px;
+    }
+
+    .action-icons a:hover {
+        color: #007bff;
+    }
+
+    /* Style de la classe alert */
+    .alert {
+        padding: 15px;
+        margin-bottom: 20px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+    }
+
+    .alert-danger {
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+    }
+
+    .alert-success {
+        color: #155724;
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+    }
+</style>
+
+<% if (message) { %>
+    <div class="alert alert-dismissible fade show alert-<%= message.type %>" role="alert">
+        <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="close"></button>
+        <strong><%= message.message %></strong>
+    </div>
+<% } %>
+
+<h1>Gestion des Salles</h1>
+<table class="table-salles">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nom</th>
+            <th>Capacité</th>
+            <th>Équipements</th>
+            <th>Disponibilités</th>
+            <th>Tarif</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% salles.forEach(salle => { %>
+            <tr>
+                <td><%= salle.Id %></td>
+                <td><%= salle.Nom %></td>
+                <td><%= salle.Capacite %></td>
+                <td><%= salle.Equipments.join(', ') %></td>
+                <td>
+                    <% salle.Disponibilites %>
+                </td>
+                <td><%= salle.Tarif %></td>
+                <td class="action-icons">
+                    <a href="modifier-salle/<%= salle.Id %>"><i class="fas fa-edit" title="Modifier"></i></a>
+                    <a href="#"><i class="fas fa-trash-alt" title="Supprimer"></i></a>
+                </td>
+            </tr>
+        <% }) %>
+    </tbody>
+</table>
+
+<%- include('layout/footer') %>
+
+
