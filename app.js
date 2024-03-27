@@ -5,6 +5,8 @@ const session = require("express-session");
 const salleRoutes = require('./routes/salleRoutes');
 const authMiddleware = require('./middleware/auth');
 const authRoutes = require('./routes/authRoutes');
+const path = require('path');
+
 const jwt = require('jsonwebtoken');
 const expressJwt = require('express-jwt');
 const bodyParser = require('body-parser');
@@ -31,7 +33,7 @@ db.once("open", () => console.log("Connected to the database!"));
 
 // Configuration du moteur de template EJS
 app.set("view engine", "ejs");
-
+app.set('views', path.join(__dirname, 'views'));
 // Middleware pour gérer les sessions
 app.use(session({
     secret: 'my secret key',
@@ -68,6 +70,7 @@ app.get('/logout', (req, res) => {
 
 app.use("/", salleRoutes);
 app.use("/", authRoutes);
+
 
 
 // Lancement du serveur
