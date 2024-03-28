@@ -30,7 +30,7 @@ router.post('/login', async (req, res) => {
     }
 
     // Générer un token JWT avec l'ID de l'utilisateur
-    const token = jwt.sign({ id: utilisateur._id , role: utilisateur.role}, 'votre_clé_secrète', { expiresIn: '1h' });
+    const token = jwt.sign({ id: utilisateur._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
     // Stocker le token dans un cookie avec httponly pour des raisons de sécurité
     res.cookie('jwt', token, { httpOnly: true });
@@ -50,7 +50,7 @@ router.get('/register', (req, res) => {
 });
 
 router.post('/register', async (req, res) => {
-  const { Email, password,role } = req.body;
+  const { Email, password } = req.body;
   try {
     const utilisateur_existant = await Utilisateur.findOne({ Email });
     if (utilisateur_existant) {
@@ -74,16 +74,7 @@ router.get('/', authMiddleware, (req, res) => {
   res.render('index', { utilisateur: req.utilisateur });
 });
 
-/*
-router.get('/dashboard', authMiddleware, (req, res) => {
-  res.render('dashboard', { user: req.utilisateur });
-});
 
-router.get('/logout', (req, res) => {
-  res.clearCookie('jwt');
-  res.redirect('/');
-});
-*/
 
 
 module.exports = router;

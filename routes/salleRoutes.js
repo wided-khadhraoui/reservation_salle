@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const Salle = require('../models/salle');
+const authMiddleware = require('../middleware/auth');
+const admin = require('../middleware/admin');
 //post de  ajout salle
 router.post('/ajouter-salle', async (req, res) => {
     try {
@@ -161,7 +163,7 @@ router.get('/salle/supprimer/:id', async (req, res) => {
   });
   
 
-  router.delete('/supprimer/:id', async (req, res) => {
+  router.delete('/supprimer/:id',async (req, res) => {
     const salleId = req.params.id;
   
     try {
@@ -181,7 +183,7 @@ router.get('/salle/supprimer/:id', async (req, res) => {
   
 
 
-router.get('/', (req, res) => {
+router.get('/' ,(req, res) => {
     res.render('index');
 });
 router.get('/ajouter-salle', (req, res) => {

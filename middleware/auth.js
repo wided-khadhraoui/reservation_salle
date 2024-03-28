@@ -1,16 +1,18 @@
-const jwtUtils = require('../jwtUtils');
+const jwt = require('jsonwebtoken');
 
-const authMiddleware = (req, res, next) => {
-  const token = req.headers.authorization ? req.headers.authorization.split(' ')[1] : null;
-  if (!token) {
-    return res.status(401).json({ message: 'Token non fourni.' });
-  }
-  const decodedToken = jwtUtils.verifyToken(token);
-  if (!decodedToken) {
-    return res.status(401).json({ message: 'Token invalide.' });
-  }
-  req.userId = decodedToken.userId;
-  next();
-};
+const authenticate = (req,res,next) =>{
+    const token = req.header('Authorization');
+    if(!token || !token.startsWith('Bearer ')){
+        return res.status(401).send('Échec de authentification : token invalide ')
+    }
+    try {
+        const tokenData = token.split(' ')[1];
+        const decodedToken = jwt.verify(tokenData,process.env.JWT_SECRET);
+        req.userId=decodedToken._id;
+        next();
+    } catch (error) {
+        return res.status(401).send('Échec de authentification : jeton invalide ')
 
-module.exports = authMiddleware;
+    }
+}
+module.exports = authenticate;

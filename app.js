@@ -3,7 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const session = require("express-session");
 const salleRoutes = require('./routes/salleRoutes');
-const authMiddleware = require('./middleware/auth');
+const authenticate= require('./middleware/auth');
 const authRoutes = require('./routes/authRoutes');
 const path = require('path');
 
@@ -68,8 +68,12 @@ app.get('/logout', (req, res) => {
 
 // Routes
 
-app.use("/", salleRoutes);
+
+app.use("/",salleRoutes);
 app.use("/", authRoutes);
+
+
+
 
 
 
