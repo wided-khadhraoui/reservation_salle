@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const Salle = require('../models/salle');
-const authMiddleware = require('../middleware/auth');
+const authenticate = require('../middleware/auth');
 const admin = require('../middleware/admin');
+
+
 //post de  ajout salle
-router.post('/ajouter-salle', async (req, res) => {
+router.post('/ajouter-salle',authenticate, async (req, res) => {
     try {
         
       const {
@@ -75,7 +77,7 @@ router.post('/ajouter-salle', async (req, res) => {
     }
   });
   //get pour afficher les salle
-  router.get('/salles', async (req, res) => {
+  router.get('/salles',authenticate,async (req, res) => {
     try {
       // Récupérer toutes les salles depuis la base de données
       const salles = await Salle.find();
@@ -88,7 +90,7 @@ router.post('/ajouter-salle', async (req, res) => {
   
 
 // Route GET pour afficher le formulaire de modification d'une salle
-router.get('/modifier/:id', async (req, res) => {
+router.get('/modifier/:id',authenticate,async (req, res) => {
     try {
       const salle = await Salle.findById(req.params.id);
       res.render('modifier-salle', { salle }); // Passer la variable salle au rendu de la vue
@@ -99,7 +101,7 @@ router.get('/modifier/:id', async (req, res) => {
   
 
 // Route PUT pour mettre à jour une salle dans la base de données
-router.put('/maj/:id', async (req, res) => {
+router.put('/maj/:id', authenticate,async (req, res) => {
   const { id } = req.params;
   try {
     await Salle.findByIdAndUpdate(id, req.body); // Met à jour la salle avec les données du formulaire
@@ -113,7 +115,7 @@ router.put('/maj/:id', async (req, res) => {
 });
 
 // POST route pour la modification de la salle
-router.post('/maj/:id', async (req, res) => {
+router.post('/maj/:id',authenticate, async (req, res) => {
     const salleId = req.params.id;
   
     try {
@@ -142,7 +144,7 @@ router.post('/maj/:id', async (req, res) => {
   
 
 // GET pour la confirmation de suppression
-router.get('/salle/supprimer/:id', async (req, res) => {
+router.get('/salle/supprimer/:id',authenticate, async (req, res) => {
     try {
       // Récupérer l'ID de la salle à supprimer depuis les paramètres de l'URL
       const { id } = req.params;
@@ -163,7 +165,7 @@ router.get('/salle/supprimer/:id', async (req, res) => {
   });
   
 
-  router.delete('/supprimer/:id',async (req, res) => {
+  router.delete('/supprimer/:id',authenticate,async (req, res) => {
     const salleId = req.params.id;
   
     try {
@@ -183,7 +185,7 @@ router.get('/salle/supprimer/:id', async (req, res) => {
   
 
 
-router.get('/' ,(req, res) => {
+router.get('/' ,authenticate,(req, res) => {
     res.render('index');
 });
 router.get('/ajouter-salle', (req, res) => {

@@ -1,9 +1,8 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const Utilisateur = require('../models/utilisateur');
-const jwtUtils = require('../jwtUtils');
 const jwt = require('jsonwebtoken'); 
-const authMiddleware = require('../middleware/auth');
+const authenticate = require('../middleware/auth');
 
 const router = express.Router();
 
@@ -30,13 +29,15 @@ router.post('/login', async (req, res) => {
     }
 
     // Générer un token JWT avec l'ID de l'utilisateur
-    const token = jwt.sign({ id: utilisateur._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ _id: utilisateur._id }, process.env.JWT_SECRET);
+    
 
     // Stocker le token dans un cookie avec httponly pour des raisons de sécurité
     res.cookie('jwt', token, { httpOnly: true });
+  
 
     // Rediriger vers la page d'accueil ou une autre page sécurisée
-    res.redirect('/');
+    res.redirect('/index');
   } catch (error) {
     console.error(error);
     req.flash('message', 'Erreur lors de la connexion.');
@@ -61,7 +62,7 @@ router.post('/register', async (req, res) => {
       const nouvel_utilisateur = new Utilisateur({ Email, password: hashedPassword });
       await nouvel_utilisateur.save();
       req.flash('message', 'Utilisateur enregistré avec succès.');
-      res.redirect('/');
+      res.redirect('/index');
     }
   } catch (error) {
     console.error(error);
@@ -70,9 +71,7 @@ router.post('/register', async (req, res) => {
   }
 });
 
-router.get('/', authMiddleware, (req, res) => {
-  res.render('index', { utilisateur: req.utilisateur });
-});
+
 
 
 

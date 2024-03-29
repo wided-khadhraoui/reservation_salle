@@ -2,10 +2,11 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const session = require("express-session");
-const salleRoutes = require('./routes/salleRoutes');
 const authenticate= require('./middleware/auth');
 const authRoutes = require('./routes/authRoutes');
+const salleRoutes = require('./routes/salleRoutes');
 const path = require('path');
+const cookieParser = require('cookie-parser');
 
 const jwt = require('jsonwebtoken');
 const expressJwt = require('express-jwt');
@@ -21,6 +22,8 @@ const PORT = process.env.PORT || 4000;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(methodOverride('_method'));
+app.use(cookieParser());
+
 
 
 // Configuration de mongoose et connexion à la base de données
@@ -54,6 +57,22 @@ app.use((req, res, next) => {
 
 app.use(flash());
 
+// Routes
+app.get('/', (req, res) => {
+    res.redirect('/login');
+});
+app.get('/index', authenticate, (req, res) => {
+    res.render('index', { utilisateur: req.utilisateur._id });
+});
+
+// Middleware pour les routes de gestion des salles
+app.use('/', salleRoutes);
+
+// Middleware pour l'authentification des routes protégées
+app.use('/', authRoutes);
+app.use(authenticate);
+
+// Route de déconnexion
 app.get('/logout', (req, res) => {
     req.session.destroy((err) => {
         if (err) {
@@ -66,11 +85,11 @@ app.get('/logout', (req, res) => {
 });
 
 
-// Routes
 
 
-app.use("/",salleRoutes);
-app.use("/", authRoutes);
+
+
+
 
 
 
