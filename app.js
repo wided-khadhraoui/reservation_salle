@@ -5,6 +5,8 @@ const session = require("express-session");
 const authenticate= require('./middleware/auth');
 const authRoutes = require('./routes/authRoutes');
 const salleRoutes = require('./routes/salleRoutes');
+const reservRoutes = require('./routes/reservRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 
@@ -65,6 +67,10 @@ app.get('/index', authenticate, (req, res) => {
     res.render('index', { utilisateur: req.utilisateur._id });
 });
 
+app.get('/indexUser', authenticate, (req, res) => {
+    res.render('indexUser', { utilisateur: req.utilisateur._id });
+});
+
 // Middleware pour les routes de gestion des salles
 app.use('/', salleRoutes);
 
@@ -83,6 +89,12 @@ app.get('/logout', (req, res) => {
         }
     });
 });
+
+app.use("/", reservRoutes);
+app.use("/reservRoutes", reservRoutes);
+
+app.use('/admin', require('./routes/adminRoutes'));
+
 
 
 

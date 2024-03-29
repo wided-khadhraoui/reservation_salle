@@ -4,7 +4,10 @@ const bcrypt = require('bcryptjs');
 const utilisateurSchema = new mongoose.Schema({
   Email: { type: String, required: true, unique: true },
   password : { type: String, required: true },
-  
+  isAdmin: {
+    type: Boolean,
+    default: false, // Par défaut, l'utilisateur n'est pas administrateur
+  },
 });
 
 utilisateurSchema.methods.comparePassword = function (password) {

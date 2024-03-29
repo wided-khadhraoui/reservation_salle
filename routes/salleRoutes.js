@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Salle = require('../models/salle');
 const authenticate = require('../middleware/auth');
-const admin = require('../middleware/admin');
+
 
 
 //post de  ajout salle

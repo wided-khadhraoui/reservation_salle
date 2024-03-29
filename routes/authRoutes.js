@@ -2,9 +2,12 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const Utilisateur = require('../models/utilisateur');
 const jwt = require('jsonwebtoken'); 
+const isAdmin = require('../middleware/isAdmin');
 const authenticate = require('../middleware/auth');
 
 const router = express.Router();
+
+
 
 router.get('/login', (req, res) => {
   res.render('login', { message: req.flash('message') });
@@ -34,10 +37,18 @@ router.post('/login', async (req, res) => {
 
     // Stocker le token dans un cookie avec httponly pour des raisons de sécurité
     res.cookie('jwt', token, { httpOnly: true });
+    // Vérifier si l'utilisateur est administrateur
+    if (utilisateur.isAdmin) {
+      // Rediriger vers la page d'accueil pour l'admin
+      return res.redirect('/index');
+    } else {
+      // Rediriger vers la page d'accueil pour les utilisateurs non-administrateurs
+      return res.redirect('/indexUser');
+    }
   
 
-    // Rediriger vers la page d'accueil ou une autre page sécurisée
-    res.redirect('/index');
+    
+    
   } catch (error) {
     console.error(error);
     req.flash('message', 'Erreur lors de la connexion.');
